@@ -44,7 +44,8 @@ alexa-skills-win.exe
 *.zip
 *.tar
 *.tar.gz
-publish
+publishProfiles/
+Properties/
 
 # Ignore private files
 *.private.json
