@@ -1,4 +1,4 @@
-# GitHubWebHookTool
+# GitHub Webhook Azure Function
 Simple Git Hub Web Hook Azure Function
 
 * GitHub Webhook which listens for new commits
