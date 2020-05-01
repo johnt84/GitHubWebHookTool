@@ -1,6 +1,4 @@
-﻿using GitHubWebHookTool.API;
-using GitHubWebHookTool.Models;
-using Microsoft.Extensions.Options;
+﻿using GitHubWebHookTool.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,22 +7,27 @@ namespace GitHubWebHookTool.Services
 {
     public class Push : IPush
     {
-        HttpAPIClient _httpAPIClient;
-        ConfigurationItems _configurationItems;
-        ICommit _commit;
-        ITopic _topic;
+        private ICommit _commit;
+        private ITopic _topic;
+        private Dictionary<string, string> _fileExtensionTopicMappings;
 
-        public Push(HttpAPIClient httpAPIClient, IOptions<ConfigurationItems> configurationItems, ICommit commit, ITopic topic)
+        public Push(ICommit commit, ITopic topic)
         {
-            _httpAPIClient = httpAPIClient;
-            _configurationItems = configurationItems.Value;
             _commit = commit;
             _topic = topic;
+            _fileExtensionTopicMappings = new Dictionary<string, string>()
+            {
+                { "aspx", "web-forms" },
+                { "cs", "csharp" },
+                { "js", "javascript" },
+                { "razor", "blazor-server" },
+                { "sql", "tsqls" }
+            };
         }
 
         public async Task<PushRaw> ReceivePushFromWebHook(PushRaw pushRaw)
         {
-            if (pushRaw == null)
+            if (pushRaw == null || !pushRaw.hook.events.Contains("push"))
             {
                 return pushRaw;
             }
@@ -56,7 +59,9 @@ namespace GitHubWebHookTool.Services
 
             var fileExtensionsInCommmit = GetFileExtensionsInCommmit(lastCommit);
 
-            var topicsInCommit = _configurationItems.FileExtensionTopicMappings
+            fileExtensionsInCommmit = new List<string>() { "js" };
+
+            var topicsInCommit = _fileExtensionTopicMappings
                                         .Where(x => fileExtensionsInCommmit.Contains(x.Key))
                                         .Select(x => x.Value)
                                         .ToList();

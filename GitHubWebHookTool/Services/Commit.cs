@@ -7,7 +7,7 @@ namespace GitHubWebHookTool.Services
 {
     public class Commit : ICommit
     {
-        HttpAPIClient _httpAPIClient;
+        private HttpAPIClient _httpAPIClient;
 
         public Commit(HttpAPIClient httpAPIClient)
         {
@@ -16,9 +16,7 @@ namespace GitHubWebHookTool.Services
 
         public async Task<CommitRaw> GetLastCommit(string url)
         {
-            string json = string.Empty;
-
-            json = await _httpAPIClient.Get($"{ url }commits/master");
+            string json = await _httpAPIClient.Get($"{ url }commits/master");
 
             return JsonConvert.DeserializeObject<CommitRaw>(json);
         }

@@ -7,7 +7,7 @@ namespace GitHubWebHookTool.Services
 {
     public class Topic : ITopic
     {
-        HttpAPIClient _httpAPIClient;
+        private HttpAPIClient _httpAPIClient;
 
         public Topic(HttpAPIClient httpAPIClient)
         {
@@ -16,9 +16,7 @@ namespace GitHubWebHookTool.Services
 
         public async Task<TopicRaw> GetTopics(string url)
         {
-            string json = string.Empty;
-
-            json = await _httpAPIClient.Get($"{ url }topics");
+            string json = await _httpAPIClient.Get($"{ url }topics");
 
             return JsonConvert.DeserializeObject<TopicRaw>(json);
         }
