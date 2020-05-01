@@ -59,8 +59,6 @@ namespace GitHubWebHookTool.Services
 
             var fileExtensionsInCommmit = GetFileExtensionsInCommmit(lastCommit);
 
-            fileExtensionsInCommmit = new List<string>() { "js" };
-
             var topicsInCommit = _fileExtensionTopicMappings
                                         .Where(x => fileExtensionsInCommmit.Contains(x.Key))
                                         .Select(x => x.Value)
