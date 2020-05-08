@@ -1,5 +1,6 @@
 ﻿using GitHubWebHookTool.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,12 +28,14 @@ namespace GitHubWebHookTool.Services
 
         public async Task<PushRaw> ReceivePushFromWebHook(PushRaw pushRaw)
         {
-            if (pushRaw == null || !pushRaw.hook.events.Contains("push"))
+            if (pushRaw == null)
             {
                 return pushRaw;
             }
 
-            string repositoryURL = pushRaw.hook.url.Substring(0, pushRaw.hook.url.IndexOf("hooks"));
+            string repositoryURL = pushRaw.repository.hooks_url
+                                    .Substring(0, pushRaw.repository.hooks_url
+                                    .IndexOf("hooks"));
 
             var topicsInCommit = await GetTopicsInCommit(repositoryURL);
 
@@ -46,8 +49,7 @@ namespace GitHubWebHookTool.Services
         private List<string> GetFileExtensionsInCommmit(CommitRaw commit)
         {
             var fileExtensionsInCommit = commit.files
-                                    .Select(x => x.filename
-                                                    .Substring(x.filename.IndexOf(".") + 1, x.filename.Length - (x.filename.IndexOf(".") + 1)))
+                                    .Select(x => Path.GetExtension(x.filename).Replace(".", ""))
                                     .ToList();
 
             return fileExtensionsInCommit;
