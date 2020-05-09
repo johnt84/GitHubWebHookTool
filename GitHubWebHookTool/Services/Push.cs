@@ -10,23 +10,14 @@ namespace GitHubWebHookTool.Services
     {
         private ICommit _commit;
         private ITopic _topic;
-        private Dictionary<string, string> _fileExtensionTopicMappings;
 
         public Push(ICommit commit, ITopic topic)
         {
             _commit = commit;
             _topic = topic;
-            _fileExtensionTopicMappings = new Dictionary<string, string>()
-            {
-                { "aspx", "web-forms" },
-                { "cs", "csharp" },
-                { "js", "javascript" },
-                { "razor", "blazor-server" },
-                { "sql", "tsqls" }
-            };
         }
 
-        public async Task<PushRaw> ReceivePushFromWebHook(PushRaw pushRaw)
+        public async Task<PushRaw> ReceivePushFromWebHook(PushRaw pushRaw, Dictionary<string, string> fileExtensionTopicMappings)
         {
             if (pushRaw == null)
             {
@@ -37,7 +28,7 @@ namespace GitHubWebHookTool.Services
                                     .Substring(0, pushRaw.repository.hooks_url
                                     .IndexOf("hooks"));
 
-            var topicsInCommit = await GetTopicsInCommit(repositoryURL);
+            var topicsInCommit = await GetTopicsInCommit(repositoryURL, fileExtensionTopicMappings);
 
             var postedNewTopicsInCommit = await _topic.UpdateTopics(repositoryURL, topicsInCommit.ToArray());
 
@@ -55,13 +46,13 @@ namespace GitHubWebHookTool.Services
             return fileExtensionsInCommit;
         }
 
-        private async Task<List<string>> GetTopicsInCommit(string repositoryURL)
+        private async Task<List<string>> GetTopicsInCommit(string repositoryURL, Dictionary<string, string> fileExtensionTopicMappings)
         {
             var lastCommit = await _commit.GetLastCommit(repositoryURL);
 
             var fileExtensionsInCommmit = GetFileExtensionsInCommmit(lastCommit);
 
-            var topicsInCommit = _fileExtensionTopicMappings
+            var topicsInCommit = fileExtensionTopicMappings
                                         .Where(x => fileExtensionsInCommmit.Contains(x.Key))
                                         .Select(x => x.Value)
                                         .ToList();

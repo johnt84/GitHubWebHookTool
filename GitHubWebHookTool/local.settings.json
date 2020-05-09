@@ -5,5 +5,12 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "GitHubAPIUrl": "https://api.github.com/",
     "PrivateToken": ""
+  },
+  "FileExtensionTopicMappings": {
+    "aspx": "web-forms",
+    "cs": "csharp",
+    "js": "javascript",
+    "razor": "blazor-server",
+    "sql": "tsql"
   }
 }
