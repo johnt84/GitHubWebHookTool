@@ -50,7 +50,7 @@ namespace GitHubWebHookTool
                 isOrAre = "is";
             }
 
-            return (ActionResult)new OkObjectResult($"A push occurred on repo {topicOutput.RepositoryName}.  The topic{s} in the commit {isOrAre} {string.Join(",", (topicOutput.TopicRaw.names))}");
+            return (ActionResult)new OkObjectResult($"A push occurred on repo {topicOutput.RepositoryName}.  The topic{s} in the last commit {isOrAre} {string.Join(", ", (topicOutput.TopicRaw.names))}");
         }
     }
 }
