@@ -1,5 +1,6 @@
 ﻿using GitHubWebHookTool.API;
 using GitHubWebHookTool.Services;
+using GitHubWebHookTool.Services.Interfaces;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,9 +13,9 @@ namespace GitHubWebHookTool
         {
             builder.Services.AddHttpClient<HttpAPIClient>();
 
-            builder.Services.AddScoped<IPush, Push>();
-            builder.Services.AddScoped<ICommit, Services.Commit>();
-            builder.Services.AddScoped<ITopic, Topic>();
+            builder.Services.AddScoped<IPushService, PushService>();
+            builder.Services.AddScoped<ICommitService, Services.CommitService>();
+            builder.Services.AddScoped<ITopicService, TopicService>();
         }
     }
 }

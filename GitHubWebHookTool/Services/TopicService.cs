@@ -1,15 +1,16 @@
 ﻿using GitHubWebHookTool.API;
 using GitHubWebHookTool.Models;
+using GitHubWebHookTool.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace GitHubWebHookTool.Services
 {
-    public class Topic : ITopic
+    public class TopicService : ITopicService
     {
         private HttpAPIClient _httpAPIClient;
 
-        public Topic(HttpAPIClient httpAPIClient)
+        public TopicService(HttpAPIClient httpAPIClient)
         {
             _httpAPIClient = httpAPIClient;
         }

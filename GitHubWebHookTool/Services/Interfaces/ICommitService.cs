@@ -1,9 +1,9 @@
 ﻿using GitHubWebHookTool.Models;
 using System.Threading.Tasks;
 
-namespace GitHubWebHookTool.Services
+namespace GitHubWebHookTool.Services.Interfaces
 {
-    public interface ICommit
+    public interface ICommitService
     {
         public Task<CommitRaw> GetLastCommit(string url);
     }

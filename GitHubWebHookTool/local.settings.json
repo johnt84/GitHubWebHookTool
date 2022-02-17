@@ -3,7 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "GitHubAPIUrl": "https://api.github.com/",
+    "GitHubAPIUrl": "",
     "PrivateToken": ""
   }
 }

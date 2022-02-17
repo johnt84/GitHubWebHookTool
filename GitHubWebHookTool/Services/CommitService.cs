@@ -1,15 +1,16 @@
 ﻿using GitHubWebHookTool.API;
 using GitHubWebHookTool.Models;
+using GitHubWebHookTool.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace GitHubWebHookTool.Services
 {
-    public class Commit : ICommit
+    public class CommitService : ICommitService
     {
         private HttpAPIClient _httpAPIClient;
 
-        public Commit(HttpAPIClient httpAPIClient)
+        public CommitService(HttpAPIClient httpAPIClient)
         {
             _httpAPIClient = httpAPIClient;
         }

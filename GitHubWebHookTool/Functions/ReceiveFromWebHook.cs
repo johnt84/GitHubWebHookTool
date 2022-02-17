@@ -1,6 +1,7 @@
 using GitHubWebHookTool.API;
 using GitHubWebHookTool.Models;
 using GitHubWebHookTool.Services;
+using GitHubWebHookTool.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -14,12 +15,12 @@ namespace GitHubWebHookTool
 {
     public class ReceiveFromWebHook
     {
-        private readonly IPush _push;
+        private readonly IPushService _pushService;
         private readonly HttpAPIClient _httpAPIClient;
 
-        public ReceiveFromWebHook(IPush push, HttpAPIClient httpAPIClient)
+        public ReceiveFromWebHook(IPushService pushService, HttpAPIClient httpAPIClient)
         {
-            _push = push;
+            _pushService = pushService;
             _httpAPIClient = httpAPIClient;
         }
 
@@ -34,11 +35,22 @@ namespace GitHubWebHookTool
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var pushRaw = JsonConvert.DeserializeObject<PushRaw>(requestBody);
 
-            string repo = pushRaw?.repository?.name;
+            var topicOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
 
-            pushRaw = await _push.ReceivePushFromWebHook(pushRaw);
+            string s = string.Empty;
+            string isOrAre = string.Empty;
 
-            return (ActionResult)new OkObjectResult($"We got data on {repo}.");
+            if (topicOutput.TopicRaw?.names.Length > 1)
+            {
+                s = "s";
+                isOrAre = "are";
+            }
+            else
+            {
+                isOrAre = "is";
+            }
+
+            return (ActionResult)new OkObjectResult($"A push occurred on repo {topicOutput.RepositoryName}.  The topic{s} in the commit {isOrAre} {string.Join(",", (topicOutput.TopicRaw.names))}");
         }
     }
 }

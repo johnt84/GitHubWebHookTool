@@ -1,4 +1,5 @@
 ﻿using GitHubWebHookTool.Models;
+using GitHubWebHookTool.Services.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace GitHubWebHookTool.Services
 {
-    public class Push : IPush
+    public class PushService : IPushService
     {
-        private ICommit _commit;
-        private ITopic _topic;
+        private ICommitService _commit;
+        private ITopicService _topic;
         private Dictionary<string, string> _fileExtensionTopicMappings;
 
-        public Push(ICommit commit, ITopic topic)
+        public PushService(ICommitService commit, ITopicService topic)
         {
             _commit = commit;
             _topic = topic;
@@ -26,11 +27,11 @@ namespace GitHubWebHookTool.Services
             };
         }
 
-        public async Task<PushRaw> ReceivePushFromWebHook(PushRaw pushRaw)
+        public async Task<TopicOutput> ReceivePushFromWebHook(PushRaw pushRaw)
         {
             if (pushRaw == null)
             {
-                return pushRaw;
+                return null;
             }
 
             string repositoryURL = pushRaw.repository.hooks_url
@@ -39,9 +40,13 @@ namespace GitHubWebHookTool.Services
 
             var topicsInCommit = await GetTopicsInCommit(repositoryURL);
 
-            var postedNewTopicsInCommit = await _topic.UpdateTopics(repositoryURL, topicsInCommit.ToArray());
+            var topicRaw = await _topic.UpdateTopics(repositoryURL, topicsInCommit.ToArray());
 
-            return pushRaw;
+            return new TopicOutput()
+            {
+                RepositoryName = pushRaw.repository?.name ?? string.Empty,
+                TopicRaw = topicRaw,
+            };
         }
 
 
