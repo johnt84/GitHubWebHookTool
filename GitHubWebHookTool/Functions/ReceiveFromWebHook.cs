@@ -35,12 +35,12 @@ namespace GitHubWebHookTool
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var pushRaw = JsonConvert.DeserializeObject<PushRaw>(requestBody);
 
-            var topicOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
+            var receivePushOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
 
             string s = string.Empty;
             string isOrAre = string.Empty;
 
-            if (topicOutput.TopicRaw?.names.Length > 1)
+            if (receivePushOutput.TopicRaw?.names.Length > 1)
             {
                 s = "s";
                 isOrAre = "are";
@@ -50,7 +50,7 @@ namespace GitHubWebHookTool
                 isOrAre = "is";
             }
 
-            return (ActionResult)new OkObjectResult($"A push occurred on repo {topicOutput.RepositoryName}.  The topic{s} in the last commit {isOrAre} {string.Join(", ", (topicOutput.TopicRaw.names))}");
+            return (ActionResult)new OkObjectResult($"A push occurred on GitHub repository {receivePushOutput.RepositoryName}.  The topic{s} now in the repo {isOrAre} {string.Join(", ", (receivePushOutput.TopicRaw.names))}");
         }
     }
 }

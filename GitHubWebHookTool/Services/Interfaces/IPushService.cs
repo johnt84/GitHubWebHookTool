@@ -5,6 +5,6 @@ namespace GitHubWebHookTool.Services.Interfaces
 {
     public interface IPushService
     {
-        Task<TopicOutput> ReceivePushFromWebHook(PushRaw pushRaw);
+        Task<ReceivePushOutput> ReceivePushFromWebHook(PushRaw pushRaw);
     }
 }

@@ -214,12 +214,12 @@ string pushRawJson = @"{
 
 var pushRaw = JsonConvert.DeserializeObject<PushRaw>(pushRawJson);
 
-var topicOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
 
 string s = string.Empty;
 string isOrAre = string.Empty;
 
-if (topicOutput.TopicRaw?.names.Length > 1)
+if (receivePushOutput.TopicRaw?.names.Length > 1)
 {
     s = "s";
     isOrAre = "are";
@@ -229,4 +229,25 @@ else
     isOrAre = "is";
 }
 
-Console.WriteLine($"A push occurred on repo {topicOutput.RepositoryName}.  The topic{s} in the last commit {isOrAre} {string.Join(", ", ((topicOutput.TopicRaw.names)))}");
+string existingTopicsInRepoForDisplay = string.Empty;
+
+if (receivePushOutput.TopicsInCommit?.ExistingTopicsInRepo?.Count > 0)
+{
+    existingTopicsInRepoForDisplay = $"\nExisting topics in repo: {string.Join(", ", receivePushOutput.TopicsInCommit.ExistingTopicsInRepo)}";
+}
+else
+{
+    existingTopicsInRepoForDisplay = $"\nThere are no existing topics in the repo";
+}
+
+Console.WriteLine($"A push occurred on the GitHub repository {receivePushOutput.RepositoryName}.  The topic{s} now in the repo {isOrAre} {string.Join(", ", ((receivePushOutput.TopicRaw.names)))}");
+
+Console.WriteLine(existingTopicsInRepoForDisplay);
+
+Console.WriteLine($"\nCommit Details");
+
+Console.WriteLine($"\nFile names: {string.Join(", ", receivePushOutput.TopicsInCommit.FilesInCommit.FileNames)}");
+Console.WriteLine($"File extensions: {string.Join(", ",receivePushOutput.TopicsInCommit.FilesInCommit.FileExtensions)}");
+Console.WriteLine($"Topics: {string.Join(", ", receivePushOutput.TopicsInCommit.TopicsInCommit)}");
+
+Console.WriteLine($"\nAll topics in repo: {string.Join(", ", receivePushOutput.TopicsInCommit.AllTopicsInRepo)}");

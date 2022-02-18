@@ -27,7 +27,7 @@ namespace GitHubWebHookTool.Services
             };
         }
 
-        public async Task<TopicOutput> ReceivePushFromWebHook(PushRaw pushRaw)
+        public async Task<ReceivePushOutput> ReceivePushFromWebHook(PushRaw pushRaw)
         {
             if (pushRaw == null)
             {
@@ -40,40 +40,55 @@ namespace GitHubWebHookTool.Services
 
             var topicsInCommit = await GetTopicsInCommit(repositoryURL);
 
-            var topicRaw = await _topic.UpdateTopics(repositoryURL, topicsInCommit.ToArray());
+            var topicRaw = await _topic.UpdateTopics(repositoryURL, topicsInCommit.AllTopicsInRepo.ToArray());
 
-            return new TopicOutput()
+            return new ReceivePushOutput()
             {
                 RepositoryName = pushRaw.repository?.name ?? string.Empty,
+                TopicsInCommit = topicsInCommit,
                 TopicRaw = topicRaw,
             };
         }
 
 
 
-        private List<string> GetFileExtensionsInCommmit(CommitRaw commit)
+        private FilesInCommit GetFileExtensionsInCommmit(CommitRaw commit)
         {
-            var fileExtensionsInCommit = commit.files
-                                    .Select(x => Path.GetExtension(x.filename).Replace(".", ""))
-                                    .ToList();
+            var filesNamesInCommit = commit.files.Select(x => x.filename).ToList();
 
-            return fileExtensionsInCommit;
+            var fileExtensionsInCommit = commit.files
+                                            .Select(x => Path.GetExtension(x.filename).Replace(".", ""))
+                                            .ToList();
+
+            return new FilesInCommit()
+            {
+                FileNames = filesNamesInCommit,
+                FileExtensions = fileExtensionsInCommit,
+            };
         }
 
-        private async Task<List<string>> GetTopicsInCommit(string repositoryURL)
+        private async Task<TopicOutput> GetTopicsInCommit(string repositoryURL)
         {
             var lastCommit = await _commit.GetLastCommit(repositoryURL);
 
-            var fileExtensionsInCommmit = GetFileExtensionsInCommmit(lastCommit);
+            var filesInCommmit = GetFileExtensionsInCommmit(lastCommit);
 
             var topicsInCommit = _fileExtensionTopicMappings
-                                        .Where(x => fileExtensionsInCommmit.Contains(x.Key))
+                                        .Where(x => filesInCommmit.FileExtensions.Contains(x.Key))
                                         .Select(x => x.Value)
                                         .ToList();
 
             var existingTopicsInRepo = await _topic.GetTopics(repositoryURL);
 
-            return existingTopicsInRepo.names.ToList().Union(topicsInCommit).ToList();
+            var allTopicsInRepo = existingTopicsInRepo.names.ToList().Union(topicsInCommit).ToList();
+
+            return new TopicOutput()
+            {
+                FilesInCommit = filesInCommmit,
+                TopicsInCommit = topicsInCommit,
+                ExistingTopicsInRepo = existingTopicsInRepo.names.ToList(),
+                AllTopicsInRepo = allTopicsInRepo,
+            };
         }
     }
 }
