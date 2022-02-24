@@ -9,14 +9,14 @@ namespace GitHubWebHookTool.Services
 {
     public class PushService : IPushService
     {
-        private ICommitService _commit;
-        private ITopicService _topic;
+        private ICommitService _commitService;
+        private ITopicService _topicService;
         private Dictionary<string, string> _fileExtensionTopicMappings;
 
-        public PushService(ICommitService commit, ITopicService topic)
+        public PushService(ICommitService commitService, ITopicService topicService)
         {
-            _commit = commit;
-            _topic = topic;
+            _commitService = commitService;
+            _topicService = topicService;
             _fileExtensionTopicMappings = new Dictionary<string, string>()
             {
                 { "aspx", "web-forms" },
@@ -40,7 +40,7 @@ namespace GitHubWebHookTool.Services
 
             var topicsInCommit = await GetTopicsInCommit(repositoryURL);
 
-            var topicRaw = await _topic.UpdateTopics(repositoryURL, topicsInCommit.AllTopicsInRepo.ToArray());
+            var topicRaw = await _topicService.UpdateTopics(repositoryURL, topicsInCommit.AllTopicsInRepo.ToArray());
 
             return new ReceivePushOutput()
             {
@@ -69,7 +69,7 @@ namespace GitHubWebHookTool.Services
 
         private async Task<TopicOutput> GetTopicsInCommit(string repositoryURL)
         {
-            var lastCommit = await _commit.GetLastCommit(repositoryURL);
+            var lastCommit = await _commitService.GetLastCommit(repositoryURL);
 
             var filesInCommmit = GetFileExtensionsInCommmit(lastCommit);
 
@@ -78,7 +78,7 @@ namespace GitHubWebHookTool.Services
                                         .Select(x => x.Value)
                                         .ToList();
 
-            var existingTopicsInRepo = await _topic.GetTopics(repositoryURL);
+            var existingTopicsInRepo = await _topicService.GetTopics(repositoryURL);
 
             var allTopicsInRepo = existingTopicsInRepo.names.ToList().Union(topicsInCommit).ToList();
 
