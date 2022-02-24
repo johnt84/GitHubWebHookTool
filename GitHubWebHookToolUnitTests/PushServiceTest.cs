@@ -19,30 +19,32 @@ namespace GitHubWebHookToolUnitTests
         [TestMethod]
         public async Task ReceivePushFromWebHookTest()
         {
-            string repoName = "BlazorToDoList";
+            string repoName = "TestRepo";
 
-            string testRepoUrl = $"https://api.github.com/repos/johnt84/{repoName}/";
+            string testRepoUrl = $"http://www.test.com/{repoName}/";
 
             var filesInCommit = new List<string>()
             {
-                "BlazorToDoList.App",
+                "Test.razor",
                 "Program.cs",
             };
 
             var fileExtensionsInCommit = new List<string>()
             {
+                "razor",
                 "cs",
             };
 
             var topicsInCommit = new List<string>()
             {
+                "blazor-server",
                 "csharp",
             };
 
-            var existingTopicsInRepo = new List<string>()
-            {
-                "csharp",
-            };
+            var existingTopicsInRepo = new List<string>();
+            //{
+            //    "blazor-server",
+            //};
 
             var allTopicsInRepo = existingTopicsInRepo.Union(topicsInCommit).ToList();
 
@@ -86,12 +88,14 @@ namespace GitHubWebHookToolUnitTests
 
             mockTopicService.Setup(x => x.GetTopics(testRepoUrl)).ReturnsAsync(topicsInCommitRaw);
 
+            var allTopicsInRepoArray = allTopicsInRepo.ToArray();
+
             var updateTopicRawOutput = new TopicRaw()
             {
-                names = allTopicsInRepo.ToArray(),
+                names = allTopicsInRepoArray,
             };
 
-            mockTopicService.Setup(x => x.UpdateTopics(testRepoUrl, allTopicsInRepo.ToArray())).ReturnsAsync(updateTopicRawOutput);
+            mockTopicService.Setup(x => x.UpdateTopics(testRepoUrl, allTopicsInRepoArray)).ReturnsAsync(updateTopicRawOutput);
 
             var testPushRaw = new PushRaw()
             {
@@ -102,38 +106,8 @@ namespace GitHubWebHookToolUnitTests
                 },
             };
 
-            string testReceivePushOutputJson = @"{
-                                       ""RepositoryName"":""BlazorToDoList"",
-                                       ""TopicsInCommit"":{
-                                                    ""FilesInCommit"":{
-                                                        ""FileNames"":[
-                                                           ""BlazorToDoList.App / Program.cs""
-                                                       ],
-                                             ""FileExtensions"":[
-                                                ""cs""
-                                                       ]
-                                          },
-                                          ""TopicsInCommit"":[
-                                             ""csharp""
-                                          ],
-                                          ""ExistingTopicsInRepo"":[
-                                             ""csharp""
-                                          ],
-                                          ""AllTopicsInRepo"":[
-                                             ""csharp""
-                                          ]
-                                       },
-                                       ""TopicRaw"":{
-                                                    ""names"":[
-                                                       ""csharp""
-                                          ]
-                                       }
-                                            }";
-
-            var testReceivePushOutputOld = JsonConvert.DeserializeObject<ReceivePushOutput>(testReceivePushOutputJson);
-
             var mockPushService = new Mock<IPushService>();
-            mockPushService.Setup(x => x.ReceivePushFromWebHook(testPushRaw)).ReturnsAsync(testReceivePushOutputOld); //testReceivePushOutput
+            mockPushService.Setup(x => x.ReceivePushFromWebHook(testPushRaw)).ReturnsAsync(testReceivePushOutput);
 
             var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
 
