@@ -14,7 +14,7 @@ namespace GitHubWebHookTool
             builder.Services.AddHttpClient<HttpAPIClient>();
 
             builder.Services.AddScoped<IPushService, PushService>();
-            builder.Services.AddScoped<ICommitService, Services.CommitService>();
+            builder.Services.AddScoped<ICommitService, CommitService>();
             builder.Services.AddScoped<ITopicService, TopicService>();
         }
     }
