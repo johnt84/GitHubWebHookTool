@@ -80,7 +80,11 @@ namespace GitHubWebHookTool.Services
 
             var existingTopicsInRepo = await _topicService.GetTopics(repositoryURL);
 
-            var allTopicsInRepo = existingTopicsInRepo.names.ToList().Union(topicsInCommit).ToList();
+            var allTopicsInRepo = existingTopicsInRepo
+                                    .names.ToList()
+                                    .Union(topicsInCommit)
+                                    .OrderBy(x => x)
+                                    .ToList();
 
             return new TopicOutput()
             {

@@ -16,14 +16,8 @@ namespace GitHubWebHookToolUnitTests
     [TestClass]
     public class PushServiceTest
     {
-        //[AssemblyInitialize]
-        //public static void AssemblyInit(TestContext context)
-        //{
-        //    // Initalization code goes here
-        //}
-
         string repoName = string.Empty;
-        string testRepoUrl = string.Empty;
+        string repoUrl = string.Empty;
         List<string> filesInCommit = new List<string>();
         List<string> fileExtensionsInCommit = new List<string>();
         List<string> topicsInCommit = new List<string>();
@@ -33,14 +27,86 @@ namespace GitHubWebHookToolUnitTests
         Mock<ICommitService> mockCommitService = new Mock<ICommitService>();
         Mock<ITopicService> mockTopicService = new Mock<ITopicService>();
 
-        PushRaw testPushRaw = new PushRaw();
+        PushRaw pushRaw = new PushRaw();
 
         [TestMethod]
-        public async Task WhenTwoNewFileExtensionsWhichMapToTopicsAndNoExistingTopicsThen_TwoTopicsInRepo()
+        public async Task TestWhenPushPassedInIsNull_ThenOutputIsNull()//WhenOneNewFileExtensionsWhichMapToTopicsAndOneDifferentExistingTopics_ThenTwoTopicsInRepo()
         {
             repoName = "TestRepo";
 
-            testRepoUrl = $"http://www.test.com/{repoName}/";
+            filesInCommit = new List<string>();
+
+            fileExtensionsInCommit = new List<string>();
+
+            topicsInCommit = new List<string>();
+
+            existingTopicsInRepo = new List<string>();
+
+            SetupTests();
+
+            pushRaw = null;
+
+            var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
+
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+
+            Assert.IsNull(receivePushOutput);
+        }
+
+        [TestMethod]
+        public async Task TestWhenRepoNameIsNotSet_ThenNoExceptionOrError()
+        {
+            repoName = string.Empty;
+
+            filesInCommit = new List<string>();
+
+            fileExtensionsInCommit = new List<string>();
+
+            topicsInCommit = new List<string>();
+
+            existingTopicsInRepo = new List<string>();
+
+            SetupTests();
+
+            var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
+
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+
+            Assert.IsNotNull(receivePushOutput);
+            Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
+            Assert.IsNotNull(receivePushOutput.TopicRaw);
+        }
+
+        [TestMethod]
+        public async Task TestWhenRepoUrlIsNotSet_ThenNoExceptionOrError()
+        {
+            repoName = "TestRepo";
+
+            repoUrl = string.Empty;
+
+            filesInCommit = new List<string>();
+
+            fileExtensionsInCommit = new List<string>();
+
+            topicsInCommit = new List<string>();
+
+            existingTopicsInRepo = new List<string>();
+
+            SetupTests();
+
+            var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
+
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+
+            Assert.IsNotNull(receivePushOutput);
+            Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
+            Assert.IsNotNull(receivePushOutput.TopicRaw);
+        }
+
+        [TestMethod]
+        public async Task WhenTwoNewFileExtensionsWhichMapToTopicsAndNoExistingTopics_ThenTwoTopicsInRepo()
+        {
+            repoName = "TestRepo";
 
             filesInCommit = new List<string>()
             {
@@ -66,7 +132,7 @@ namespace GitHubWebHookToolUnitTests
 
             var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
 
-            var receivePushOutput = await pushService.ReceivePushFromWebHook(testPushRaw);
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
 
             Assert.IsNotNull(receivePushOutput);
             Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
@@ -77,11 +143,9 @@ namespace GitHubWebHookToolUnitTests
         }
 
         [TestMethod]
-        public async Task WhenOneNewFileExtensionsWhichMapToTopicAndOneDifferentExistingTopicsThen_TwoTopicsInRepo()
+        public async Task WhenOneNewFileExtensionsWhichMapToTopicsAndOneDifferentExistingTopics_ThenTwoTopicsInRepo()
         {
             repoName = "TestRepo";
-
-            testRepoUrl = $"http://www.test.com/{repoName}/";
 
             filesInCommit = new List<string>()
             {
@@ -107,7 +171,7 @@ namespace GitHubWebHookToolUnitTests
 
             var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
 
-            var receivePushOutput = await pushService.ReceivePushFromWebHook(testPushRaw);
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
 
             Assert.IsNotNull(receivePushOutput);
             Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
@@ -117,12 +181,120 @@ namespace GitHubWebHookToolUnitTests
             Assert.AreEqual(allTopicsInRepo.Last(), receivePushOutput.TopicsInCommit.AllTopicsInRepo.Last());
         }
 
+        [TestMethod]
+        public async Task WhenOneFileExtensionsWhichMapToTopicsAndSameExistingTopic_ThenOneTopicInRepo()
+        {
+            repoName = "TestRepo";
+
+            filesInCommit = new List<string>()
+            {
+                "Program.cs",
+            };
+
+            fileExtensionsInCommit = new List<string>()
+            {
+                "cs",
+            };
+
+            topicsInCommit = new List<string>()
+            {
+                "csharp",
+            };
+
+            existingTopicsInRepo = new List<string>()
+            {
+                "csharp",
+            };
+
+            SetupTests();
+
+            var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
+
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+
+            Assert.IsNotNull(receivePushOutput);
+            Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
+            Assert.IsNotNull(receivePushOutput.TopicRaw);
+            Assert.AreEqual(1, receivePushOutput.TopicsInCommit.AllTopicsInRepo.Count);
+            Assert.AreEqual(allTopicsInRepo.First(), receivePushOutput.TopicsInCommit.AllTopicsInRepo.First());
+        }
+
+        [TestMethod]
+        public async Task WhenNoNewFileExtensionsWhichMapToTopicsAndNoExistingTopics_ThenNoTopicsInRepo()
+        {
+            repoName = "TestRepo";
+
+            filesInCommit = new List<string>()
+            {
+                "Test.vb",
+            };
+
+            fileExtensionsInCommit = new List<string>()
+            {
+                "vb",
+            };
+
+            topicsInCommit = new List<string>();
+
+            existingTopicsInRepo = new List<string>();
+
+            SetupTests();
+
+            var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
+
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+
+            Assert.IsNotNull(receivePushOutput);
+            Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
+            Assert.IsNotNull(receivePushOutput.TopicRaw);
+            Assert.AreEqual(0, receivePushOutput.TopicsInCommit.AllTopicsInRepo.Count);
+        }
+
+        [TestMethod]
+        public async Task WhenNoNewFileExtensionsWhichMapToTopicsAndOneExistingTopic_ThenOneTopicInRepo()
+        {
+            repoName = "TestRepo";
+
+            filesInCommit = new List<string>()
+            {
+                "Test.vb",
+            };
+
+            fileExtensionsInCommit = new List<string>()
+            {
+                "vb",
+            };
+
+            topicsInCommit = new List<string>();
+
+            existingTopicsInRepo = new List<string>(){
+                "blazor-server",
+            };
+
+            SetupTests();
+
+            var pushService = new PushService(mockCommitService.Object, mockTopicService.Object);
+
+            var receivePushOutput = await pushService.ReceivePushFromWebHook(pushRaw);
+
+            Assert.IsNotNull(receivePushOutput);
+            Assert.AreEqual(repoName, receivePushOutput.RepositoryName);
+            Assert.IsNotNull(receivePushOutput.TopicRaw);
+            Assert.AreEqual(1, receivePushOutput.TopicsInCommit.AllTopicsInRepo.Count);
+            Assert.AreEqual(allTopicsInRepo.First(), receivePushOutput.TopicsInCommit.AllTopicsInRepo.First());
+        }
+
         private void SetupTests()
         {
-            allTopicsInRepo = topicsInCommit.Union(existingTopicsInRepo).ToList();
+            repoUrl = $"http://www.test.com/{repoName}/";
+
+            allTopicsInRepo = topicsInCommit
+                                .Union(existingTopicsInRepo)
+                                .OrderBy(x => x)
+                                .ToList();
 
             var mockHttpAPIClient = new Mock<IHttpAPIClient>();
-            mockHttpAPIClient.Setup(x => x.Get(testRepoUrl)).ReturnsAsync(string.Empty);
+            mockHttpAPIClient.Setup(x => x.Get(repoUrl)).ReturnsAsync(string.Empty);
 
             var testLastCommit = new CommitRaw()
             {
@@ -130,16 +302,16 @@ namespace GitHubWebHookToolUnitTests
             };
 
             mockCommitService = new Mock<ICommitService>();
-            mockCommitService.Setup(x => x.GetLastCommit(testRepoUrl)).ReturnsAsync(testLastCommit);
+            mockCommitService.Setup(x => x.GetLastCommit(repoUrl)).ReturnsAsync(testLastCommit);
 
             mockTopicService = new Mock<ITopicService>();
 
             var topicsInCommitRaw = new TopicRaw()
             {
-                names = topicsInCommit.ToArray(),
+                names = existingTopicsInRepo.ToArray(),
             };
 
-            mockTopicService.Setup(x => x.GetTopics(testRepoUrl)).ReturnsAsync(topicsInCommitRaw);
+            mockTopicService.Setup(x => x.GetTopics(repoUrl)).ReturnsAsync(topicsInCommitRaw);
 
             var allTopicsInRepoArray = allTopicsInRepo.ToArray();
 
@@ -148,13 +320,13 @@ namespace GitHubWebHookToolUnitTests
                 names = allTopicsInRepoArray,
             };
 
-            mockTopicService.Setup(x => x.UpdateTopics(testRepoUrl, allTopicsInRepoArray)).ReturnsAsync(updateTopicRawOutput);
+            mockTopicService.Setup(x => x.UpdateTopics(repoUrl, allTopicsInRepoArray)).ReturnsAsync(updateTopicRawOutput);
 
-            testPushRaw = new PushRaw()
+            pushRaw = new PushRaw()
             {
                 repository = new Repository()
                 {
-                    hooks_url = $"{testRepoUrl}hooks",
+                    hooks_url = $"{repoUrl}hooks",
                     name = repoName,
                 },
             };
@@ -180,7 +352,7 @@ namespace GitHubWebHookToolUnitTests
             };
 
             var mockPushService = new Mock<IPushService>();
-            mockPushService.Setup(x => x.ReceivePushFromWebHook(testPushRaw)).ReturnsAsync(testReceivePushOutput);
+            mockPushService.Setup(x => x.ReceivePushFromWebHook(pushRaw)).ReturnsAsync(testReceivePushOutput);
         }
     }
 }
