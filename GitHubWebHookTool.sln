@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookToolUnitTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubWebHookEngine", "GitHubWebHookEngine\GitHubWebHookEngine.csproj", "{B41C561D-EC7F-4C91-A5E1-798F184874A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubWebHookShared", "GitHubWebHookModels\GitHubWebHookShared.csproj", "{5E87C67E-BC11-4CEF-BC35-024749B8389D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubWebHookShared", "GitHubWebHookShared\GitHubWebHookShared.csproj", "{5E87C67E-BC11-4CEF-BC35-024749B8389D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
