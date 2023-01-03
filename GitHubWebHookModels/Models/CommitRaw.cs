@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GitHubWebHookTool.Models
+﻿namespace GitHubWebHookShared.Models
 {
     public class CommitRaw
     {

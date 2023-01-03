@@ -1,11 +1,7 @@
-﻿using GitHubWebHookTool.Models;
-using GitHubWebHookTool.Services.Interfaces;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GitHubWebHookEngine.Services.Interfaces;
+using GitHubWebHookShared.Models;
 
-namespace GitHubWebHookTool.Services
+namespace GitHubWebHookEngine.Services
 {
     public class PushService : IPushService
     {

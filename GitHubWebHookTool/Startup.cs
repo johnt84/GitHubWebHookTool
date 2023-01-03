@@ -1,6 +1,6 @@
-﻿using GitHubWebHookTool.API;
-using GitHubWebHookTool.Services;
-using GitHubWebHookTool.Services.Interfaces;
+﻿using GitHubWebHookEngine.API;
+using GitHubWebHookEngine.Services;
+using GitHubWebHookEngine.Services.Interfaces;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
