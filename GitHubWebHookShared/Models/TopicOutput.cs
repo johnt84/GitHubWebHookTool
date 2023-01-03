@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GitHubWebHookShared.Models
+﻿namespace GitHubWebHookShared.Models
 {
     public class TopicOutput
     {
