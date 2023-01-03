@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GitHubWebHookTool.Models
+namespace GitHubWebHookShared.Models
 {
     public class FilesInCommit
     {

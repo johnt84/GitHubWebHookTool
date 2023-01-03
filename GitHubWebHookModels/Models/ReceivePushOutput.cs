@@ -1,4 +1,4 @@
-﻿namespace GitHubWebHookTool.Models
+﻿namespace GitHubWebHookShared.Models
 {
     public class ReceivePushOutput
     {

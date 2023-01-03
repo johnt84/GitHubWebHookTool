@@ -1,10 +1,9 @@
-﻿using GitHubWebHookTool.API;
-using GitHubWebHookTool.Models;
-using GitHubWebHookTool.Services.Interfaces;
+﻿using GitHubWebHookEngine.Services.Interfaces;
+using GitHubWebHookEngine.API;
+using GitHubWebHookShared.Models;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
-namespace GitHubWebHookTool.Services
+namespace GitHubWebHookEngine.Services
 {
     public class TopicService : ITopicService
     {

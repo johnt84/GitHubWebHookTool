@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace GitHubWebHookTool.API
+﻿namespace GitHubWebHookEngine.API
 {
     public interface IHttpAPIClient
     {

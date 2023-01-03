@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 
-namespace GitHubWebHookTool.API
+namespace GitHubWebHookEngine.API
 {
     public class HttpAPIClient : IHttpAPIClient
     {

@@ -1,7 +1,6 @@
-﻿using GitHubWebHookTool.Models;
-using System.Threading.Tasks;
+﻿using GitHubWebHookShared.Models;
 
-namespace GitHubWebHookTool.Services.Interfaces
+namespace GitHubWebHookEngine.Services.Interfaces
 {
     public interface ITopicService
     {
