@@ -15,12 +15,10 @@ namespace GitHubWebHookTool
     public class ReceiveFromWebHook
     {
         private readonly IPushService _pushService;
-        private readonly HttpAPIClient _httpAPIClient;
 
-        public ReceiveFromWebHook(IPushService pushService, HttpAPIClient httpAPIClient)
+        public ReceiveFromWebHook(IPushService pushService)
         {
             _pushService = pushService;
-            _httpAPIClient = httpAPIClient;
         }
 
         [FunctionName("ReceiveFromWebHook")]
