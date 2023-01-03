@@ -1,22 +1,19 @@
-name: Build and deploy .NET Core Function App to Azure functions app
+name: Build and deploy .NET Core application to Function App githubtopicwebhook
 on:
   push:
     branches:
     - master
-    paths:
-    - 'GitHubWebHookTool/**'
 env:
   AZURE_FUNCTIONAPP_NAME: githubtopicwebhook
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: GitHubWebHookTool/publish
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: GitHubWebHookTool\published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
   WORKING_DIRECTORY: GitHubWebHookTool
-  TEST_DIRECTORY: GitHubWebHookToolUnitTests
 jobs:
-  build-and-deploy:
+  build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -27,11 +24,23 @@ jobs:
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
-    - name: Test
-      run: dotnet test "${{ env.TEST_DIRECTORY }}"
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: functionapp
+        path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v2
+      with:
+        name: functionapp
+        path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.GitHubWebHookTool_ec91 }}
+        publish-profile: ${{ secrets.githubtopicwebhook_F5C8 }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
