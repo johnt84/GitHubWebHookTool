@@ -10,12 +10,13 @@ var builder = new ConfigurationBuilder()
 
 var config = builder.Build();
 
-var httpClient = new HttpClient();
+var gitHubWebHookToolInput = new GitHubWebHookToolInput()
+{
+    GitHubAPIUrl = config["GitHubAPIURL"],
+    PrivateToken = config["PrivateToken"],
+};
 
-httpClient.BaseAddress = new Uri(config["GitHubAPIURL"]);
-httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", config["PrivateToken"]);
-
-var httpAPIClient = new HttpAPIClient(httpClient);
+var httpAPIClient = new HttpAPIClient(new HttpClient(), gitHubWebHookToolInput);
 
 var commitService = new CommitService(httpAPIClient);
 
