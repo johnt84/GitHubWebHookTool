@@ -11,14 +11,14 @@ namespace GitHubWebHookEngine.API
 
         public HttpAPIClient(HttpClient httpClient, GitHubWebHookToolInput gitHubWebHookToolInput)
         {
-            _gitHubWebHookToolInput = gitHubWebHookToolInput;
-
             if (httpClient == null)
             {
                 return;
             }
 
-            if(httpClient.BaseAddress == null)
+            _gitHubWebHookToolInput = gitHubWebHookToolInput;
+
+            if (httpClient.BaseAddress == null)
             {
                 httpClient.BaseAddress = new Uri(_gitHubWebHookToolInput.GitHubAPIUrl);
             }
