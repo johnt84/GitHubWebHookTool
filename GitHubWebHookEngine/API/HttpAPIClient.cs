@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using GitHubWebHookShared.Models;
+using System.Net.Http.Json;
 
 namespace GitHubWebHookEngine.API
 {
@@ -6,16 +7,20 @@ namespace GitHubWebHookEngine.API
     {
         public HttpClient _Client { get; }
 
-        public HttpAPIClient(HttpClient httpClient)
+        private readonly GitHubWebHookToolInput _gitHubWebHookToolInput = null;
+
+        public HttpAPIClient(HttpClient httpClient, GitHubWebHookToolInput gitHubWebHookToolInput)
         {
-            if(httpClient == null)
+            if (httpClient == null)
             {
                 return;
             }
 
-            if(httpClient.BaseAddress == null)
+            _gitHubWebHookToolInput = gitHubWebHookToolInput;
+
+            if (httpClient.BaseAddress == null)
             {
-                httpClient.BaseAddress = new Uri(Environment.GetEnvironmentVariable("GitHubAPIUrl"));
+                httpClient.BaseAddress = new Uri(_gitHubWebHookToolInput.GitHubAPIUrl);
             }
 
             httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppName", "1.0"));
@@ -26,7 +31,7 @@ namespace GitHubWebHookEngine.API
 
             if (httpClient.DefaultRequestHeaders?.Authorization == null)
             {
-                httpClient.DefaultRequestHeaders.Authorization = httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", Environment.GetEnvironmentVariable("PrivateToken"));
+                httpClient.DefaultRequestHeaders.Authorization = httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", _gitHubWebHookToolInput.PrivateToken);
             }
 
             _Client = httpClient;
