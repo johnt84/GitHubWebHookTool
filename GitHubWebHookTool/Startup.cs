@@ -15,10 +15,6 @@ namespace GitHubWebHookTool
         {
             //Environment Variables read from local.settings.json
 
-            bool.TryParse(Environment.GetEnvironmentVariable("AddDelay"), out bool addDelay);
-
-            Int32.TryParse(Environment.GetEnvironmentVariable("DelayInMilliseconds"), out int delayInMilliseconds);
-
             var gitHubWebHookToolInput = new GitHubWebHookToolInput()
             {
                 GitHubAPIUrl = Environment.GetEnvironmentVariable("GitHubAPIUrl"),
