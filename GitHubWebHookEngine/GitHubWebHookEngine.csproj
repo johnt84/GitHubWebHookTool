@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GitHubWebHookModels\GitHubWebHookShared.csproj" />
     <ProjectReference Include="..\GitHubWebHookShared\GitHubWebHookShared.csproj" />
   </ItemGroup>
 

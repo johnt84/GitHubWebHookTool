@@ -10,7 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GitHubWebHookEngine\GitHubWebHookEngine.csproj" />
-    <ProjectReference Include="..\GitHubWebHookModels\GitHubWebHookShared.csproj" />
     <ProjectReference Include="..\GitHubWebHookShared\GitHubWebHookShared.csproj" />
   </ItemGroup>
   <ItemGroup>
