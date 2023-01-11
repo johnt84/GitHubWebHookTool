@@ -1,5 +1,7 @@
 using Amazon.Lambda.Core;
 using GitHubWebHookEngine.Services.Interfaces;
+using GitHubWebHookShared.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GitHubWebHookAWSLambdaTool.Functions;
 
@@ -16,8 +18,8 @@ public class ReceiveFromWebHook
     }
 
     [LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-    public string FunctionHandler(string input, ILambdaContext context)
+    public async Task<ReceivePushOutput> FunctionHandler(PushRaw pushRaw, ILambdaContext context)
     {
-        return input.ToUpper();
+        return await _pushService.ReceivePushFromWebHook(pushRaw);
     }
 }

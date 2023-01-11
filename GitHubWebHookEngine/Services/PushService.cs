@@ -25,7 +25,7 @@ namespace GitHubWebHookEngine.Services
 
         public async Task<ReceivePushOutput> ReceivePushFromWebHook(PushRaw pushRaw)
         {
-            if (pushRaw == null)
+            if (string.IsNullOrEmpty(pushRaw?.repository?.hooks_url ?? string.Empty))
             {
                 return null;
             }
