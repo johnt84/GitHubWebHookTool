@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookToolTesterApp"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookToolUnitTests", "GitHubWebHookToolUnitTests\GitHubWebHookToolUnitTests.csproj", "{722237EE-E464-439C-A9EA-E3420BDEF4FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubWebHookEngine", "GitHubWebHookEngine\GitHubWebHookEngine.csproj", "{B41C561D-EC7F-4C91-A5E1-798F184874A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookEngine", "GitHubWebHookEngine\GitHubWebHookEngine.csproj", "{B41C561D-EC7F-4C91-A5E1-798F184874A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubWebHookShared", "GitHubWebHookShared\GitHubWebHookShared.csproj", "{5E87C67E-BC11-4CEF-BC35-024749B8389D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookShared", "GitHubWebHookShared\GitHubWebHookShared.csproj", "{5E87C67E-BC11-4CEF-BC35-024749B8389D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookAWSLambdaTool", "GitHubWebHookAWSLambdaTool\GitHubWebHookAWSLambdaTool.csproj", "{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5E87C67E-BC11-4CEF-BC35-024749B8389D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E87C67E-BC11-4CEF-BC35-024749B8389D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E87C67E-BC11-4CEF-BC35-024749B8389D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
