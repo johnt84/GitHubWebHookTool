@@ -20,7 +20,7 @@
     "function-description"  : "",
     "package-type"          : "Zip",
     "tracing-mode"          : "PassThrough",
-    "environment-variables" : "\"GitHubAPIUrl\"=\"https://api.github.com/repos/johnt84\";\"PrivateToken\"=\"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\"",
+    "environment-variables" : "\"GitHubAPIUrl\"=\"\";\"PrivateToken\"=\"\"",
     "image-tag"             : "",
     "function-role"         : "arn:aws:iam::473308587443:role/service-role/GithubWebHookAWSLambdaFunction-role-1uij2znk",
     "function-subnets"      : "",
