@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - master
+    paths:
+    - 'GitHubWebHookTool/**'
 env:
   AZURE_FUNCTIONAPP_NAME: githubtopicwebhook
   AZURE_FUNCTIONAPP_PACKAGE_PATH: GitHubWebHookTool\published
