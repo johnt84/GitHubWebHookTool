@@ -46,8 +46,6 @@ namespace GitHubWebHookEngine.Services
             };
         }
 
-
-
         private FilesInCommit GetFileExtensionsInCommmit(CommitRaw commit)
         {
             var filesNamesInCommit = commit.files.Select(x => x.filename).ToList();

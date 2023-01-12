@@ -18,8 +18,28 @@ public class ReceiveFromWebHook
     }
 
     [LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-    public async Task<ReceivePushOutput> FunctionHandler(PushRaw pushRaw, ILambdaContext context)
+    public async Task<string> FunctionHandler(PushRaw pushRaw, ILambdaContext context)
     {
-        return await _pushService.ReceivePushFromWebHook(pushRaw);
+        var receivePushOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
+
+        if(receivePushOutput == null)
+        {
+            return "Invalid Push Raw Input";
+        }
+
+        string s = string.Empty;
+        string isOrAre = string.Empty;
+
+        if ((receivePushOutput.TopicRaw?.names?.Length ?? 0) > 1)
+        {
+            s = "s";
+            isOrAre = "are";
+        }
+        else
+        {
+            isOrAre = "is";
+        }
+
+        return $"A push occurred on GitHub repository {receivePushOutput.RepositoryName}.  The topic{s} now in the repo {isOrAre} {string.Join(", ", (receivePushOutput.TopicRaw?.names))}";
     }
 }

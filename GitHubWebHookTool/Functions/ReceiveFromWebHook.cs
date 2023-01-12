@@ -34,6 +34,11 @@ namespace GitHubWebHookTool
 
             var receivePushOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
 
+            if (receivePushOutput == null)
+            {
+                return (ActionResult)new BadRequestObjectResult("Invalid Push Raw Input");
+            }
+
             string s = string.Empty;
             string isOrAre = string.Empty;
 
