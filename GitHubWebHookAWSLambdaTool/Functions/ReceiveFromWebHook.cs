@@ -14,8 +14,7 @@ public class ReceiveFromWebHook
 
     public ReceiveFromWebHook()
     {
-        var startup = new Startup();
-        IServiceProvider provider = startup.ConfigureServices();
+        IServiceProvider provider = Startup.ConfigureServices();
 
         _pushService = provider.GetRequiredService<IPushService>();
     }

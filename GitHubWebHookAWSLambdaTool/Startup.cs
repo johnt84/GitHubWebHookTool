@@ -2,23 +2,13 @@
 using GitHubWebHookEngine.Services;
 using GitHubWebHookEngine.Services.Interfaces;
 using GitHubWebHookShared.Models;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GitHubWebHookAWSLambdaTool
 {
-    public class Startup
+    public static class Startup
     {
-        private readonly IConfigurationRoot Configuration;
-
-        public Startup()
-        {
-            Configuration = new ConfigurationBuilder()
-                                .AddEnvironmentVariables()
-                                .Build();
-        }
-
-        public IServiceProvider ConfigureServices()
+        public static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
 
@@ -38,9 +28,7 @@ namespace GitHubWebHookAWSLambdaTool
             services.AddScoped<ICommitService, CommitService>();
             services.AddScoped<ITopicService, TopicService>();
 
-            IServiceProvider provider = services.BuildServiceProvider();
-
-            return provider;
+            return services.BuildServiceProvider();
         }
     }
 }
