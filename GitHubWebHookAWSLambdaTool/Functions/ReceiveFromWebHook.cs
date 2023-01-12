@@ -3,6 +3,7 @@ using Amazon.Lambda.Core;
 using GitHubWebHookEngine.Services.Interfaces;
 using GitHubWebHookShared.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace GitHubWebHookAWSLambdaTool.Functions;
@@ -20,11 +21,26 @@ public class ReceiveFromWebHook
     }
 
     [LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-    public async Task<APIGatewayProxyResponse> FunctionHandler(PushRaw pushRaw, ILambdaContext context)
+    public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
     {
+        context.Logger.LogLine($"ReceiveFromWebHook received a push request pushRaw: {request.Body}");
+
+        if (string.IsNullOrWhiteSpace(request.Body))
+        {
+            return new APIGatewayProxyResponse
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Body = "Invalid Push Raw Input",
+            };
+        }
+
+        var pushRaw = JsonConvert.DeserializeObject<PushRaw>(request.Body);
+
         var receivePushOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
 
-        if(receivePushOutput == null)
+        context.Logger.LogLine($"\nReceivePushOutput returned from the PushService: {JsonConvert.SerializeObject(receivePushOutput)}");
+
+        if (receivePushOutput == null)
         {
             return new APIGatewayProxyResponse
             {
