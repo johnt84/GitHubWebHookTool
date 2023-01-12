@@ -27,14 +27,15 @@ namespace GitHubWebHookTool
             ExecutionContext context,
             ILogger log)
         {
-            log.LogInformation($"ReceiveFromWebHook received a push request pushRaw: {req.Body}");
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-            if (string.IsNullOrWhiteSpace(req.Body.ToString()))
+            log.LogInformation($"ReceiveFromWebHook received a push request pushRaw: {requestBody}");
+
+            if (string.IsNullOrWhiteSpace(requestBody))
             {
                 return (ActionResult)new BadRequestObjectResult("Invalid Push Raw Input");
             }
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var pushRaw = JsonConvert.DeserializeObject<PushRaw>(requestBody);
 
             var receivePushOutput = await _pushService.ReceivePushFromWebHook(pushRaw);
