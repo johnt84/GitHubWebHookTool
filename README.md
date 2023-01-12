@@ -6,6 +6,10 @@ Simple GitHub Webhook Azure Function
 * The current file extension to topic mappings (shown below) is stored in appsettings.json
 * Developed with Azure Functions 4.0/.Net 6
 * Contains a unit test app which uses MS Test .Net 6 and utilises the Moq 4.16 library to unit test the push service
+* There is also an AWS Lambda Funciton version of the GitHub WebHook
+  * Both the GitHub WebHook Azure Function and AWS Lambda Function utilise: 
+    * Shared GitHubWebHookEngine Class Library (.Net 6)
+    * Shared Models Class Library (.Net 6)
 
 | File Extension  | Topic |
 | ------------- | ------------- |
