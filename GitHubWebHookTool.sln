@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookShared", "GitH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookAWSLambdaTool", "GitHubWebHookAWSLambdaTool\GitHubWebHookAWSLambdaTool.csproj", "{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubWebHookAWSServerlessTool", "GitHubWebHookAWSServerlessTool\GitHubWebHookAWSServerlessTool.csproj", "{795DFAB3-15F1-4B3B-872E-23049D3CB101}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1044AF-65F6-471F-B2AF-5DB13D634AF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795DFAB3-15F1-4B3B-872E-23049D3CB101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795DFAB3-15F1-4B3B-872E-23049D3CB101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795DFAB3-15F1-4B3B-872E-23049D3CB101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795DFAB3-15F1-4B3B-872E-23049D3CB101}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
