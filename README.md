@@ -7,11 +7,11 @@ Simple GitHub Webhook Azure Function
 * Developed with Azure Functions 4.0/.Net 6
 * Contains a unit test app which uses MS Test .Net 6 and utilises the Moq 4.16 library to unit test the push service
 * There is also AWS Lambda Function versions of the GitHub WebHook which are:-
- - An AWS Lamda Function
- - An AWS Serverless API Function
-  . The GitHub WebHook Azure Function and AWS Lambda Functios utilise: 
-    - Shared GitHubWebHookEngine Class Library (.Net 6)
-    - Shared Models Class Library (.Net 6)
+   + AWS Lamda Function
+   + AWS Serverless API Function
+* The GitHub WebHook Azure Function and AWS Lambda Functions utilise: 
+    + Shared GitHubWebHookEngine Class Library (.Net 6)
+    + Shared Models Class Library (.Net 6)
 
 | File Extension  | Topic |
 | ------------- | ------------- |
