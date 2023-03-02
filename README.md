@@ -1,7 +1,7 @@
 # GitHub Webhook Azure Function
 Simple GitHub Webhook Azure Function
 
-Maintains topics in a GitHub repository by looking file extensions of source code files in the last commit of the GitHub repo which are mapped to topics the GitHubWebHook tool currently looks for.
+Maintains topics in a GitHub repository by looking through file extensions of source code files in the last commit of the GitHub repo which are mapped to topics the GitHubWebHook tool currently looks for.
 
 * GitHub Webhook which listens for new commits (git push)
 * It maintains the list of topics on a GitHub repository by obtaining the file extensions in the last commit and then updating the topics in the GitHub repository based on the last commit.  For example if the last commit contains a file with a .cs extension then the Azure Function will ensure that csharp is added as a topic on the GitHub repository using the GitHub api
