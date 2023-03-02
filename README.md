@@ -31,13 +31,13 @@ Maintains topics in a GitHub repository by reading file extensions of source cod
 
 ### Last commit with one mapped Topic of C#
 
-Two file extensions of .cs and .json in last commit but only .cs is mapped to csharp topic.
+Two file extensions of .cs and .json in last commit but only .cs is mapped to one of the set topics which is the csharp topic.
 
 ![image](https://user-images.githubusercontent.com/33494306/222494086-9e453901-33dd-41cb-9c0e-c65b4acc220b.png)
 
 ### Postman Request and Response showing updated list of topics on GitHub repo
 
-GitHubWebHookTool maintains the list of current topics and adds any extra topics not already in the current list of topics in the repo.  Therefore here there was already an existing topic of football-data and the csharp topic is added to the list.
+GitHubWebHookTool maintains the list of current topics and adds any extra topics not already in the current list of topics in the repo.  Therefore in this example where there was already an existing topic of football-data then the csharp topic is added to the list of topics for this GitHub repo.
 
 ![image](https://user-images.githubusercontent.com/33494306/222493852-f4d3e727-48e5-4df9-9eaa-59ced0112358.png)
 
